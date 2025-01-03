@@ -12,7 +12,7 @@ interface FormattedWalletBalance {
 }
 
 const WalletPage: React.FC<BoxProps> = (props: BoxProps) => { // Remove unnecessary Props
-    const { ...rest } = props;  // Removed children if it's not needed
+    // Removed props destructure
     const balances = useWalletBalances();
     const prices = usePrices();
 
@@ -48,24 +48,13 @@ const WalletPage: React.FC<BoxProps> = (props: BoxProps) => { // Remove unnecess
                         className={classes.row}
                         key={index} // It is okay in this case but should be uuid
                         amount={balance.amount}
-                        usdValue={prices[balance.currency] * balance.amount} // Value can be directed calculated
+                        usdValue={prices[balance.currency] * balance.amount} // Value can be directly calculated
                         formattedAmount={balance.formatted}
                     />
                 ))
 
     }, [balances, prices]);
 
-    const rows = sortedBalances.map((balance: FormattedWalletBalance, index: number) =>
-         (
-            <WalletRow
-                className={classes.row}
-                key={index} // It is okay in this case but should be uuid
-                amount={balance.amount}
-                usdValue={prices[balance.currency] * balance.amount} // Value can be directed calculated
-                formattedAmount={balance.formatted}
-            />
-        )
-    );
 
-    return <div {...rest}>{rows}</div>;
+    return <div {...props}>{rows}</div>; // use props
 };
